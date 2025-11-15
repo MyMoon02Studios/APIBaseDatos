@@ -15,7 +15,7 @@ app.use(helmet());
 // 2. CORS (Acceso)
 // Permite que cualquier dominio acceda (en producción, deberías limitar esto)
 app.use(cors({
-  origin: '*', // En producción, reemplaza '*' por tu URL de frontend (ej. 'https://mi-frontend.com')
+  origin: 'https://apibasedatos.onrender.com', // En producción, reemplaza '*' por tu URL de frontend (ej. 'https://mi-frontend.com')
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
