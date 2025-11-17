@@ -34,7 +34,7 @@ Sigue estos pasos para poner en marcha el proyecto en tu entorno local.
 ```bash
 # Clona tu repositorio (o inicia el proyecto)
 git clone [URL_DE_TU_REPOSITORIO]
-cd mi-api-escalable
+cd apiBaseDatos
 
 # Instala todas las dependencias
 npm install
