@@ -5,7 +5,7 @@ const { createPost, getAllPosts } = require('../services/supabase.service');
 const createPostController = async (req, res, next) => {
   try {
     // 1. Extraer datos de la petición (req.body)
-    const { title, content } = req.body;
+    const { title, content } = req.query;
 
     // *Validación básica (ESENCIAL en cualquier API)*
     if (!title || !content) {
