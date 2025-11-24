@@ -16,6 +16,12 @@ const createPostController = async (req, res, next) => {
       });
     }
 
+    if (!key) {
+      return res.status(403).json({
+        message: 'La clave secreta es obligatoria.'
+      });
+    }
+
     else if (key !== config.postKey) {
       return res.status(403).json({
         message: 'Clave secreta incorrecta.'
