@@ -6,6 +6,7 @@ const config = {
   port: process.env.PORT || 3000,
   supabaseUrl: process.env.SUPABASE_URL,
   supabaseKey: process.env.SUPABASE_KEY,
+  postKey: process.env.POST_KEY || 'noKey',
 };
 
 // Verificación de seguridad: si falta la URL o la clave, detenemos la app

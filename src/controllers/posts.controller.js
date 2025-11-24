@@ -1,17 +1,24 @@
 // Importamos solo las funciones que necesitamos del servicio de Supabase
 const { createPost, getAllPosts } = require('../services/supabase.service');
+const config = require('../config');
 
 // Función para manejar la creación de un nuevo post (POST /api/posts)
 const createPostController = async (req, res, next) => {
   try {
     // 1. Extraer datos de la petición (req.body)
-    const { title, content } = req.query;
+    const { title, content, key } = req.query;
 
     // *Validación básica (ESENCIAL en cualquier API)*
     if (!title || !content) {
       // Si faltan datos, enviamos un error 400 (Bad Request)
       return res.status(400).json({ 
         message: 'Faltan campos. Los campos "title" y "content" son obligatorios.' 
+      });
+    }
+
+    else if (key !== config.postKey) {
+      return res.status(403).json({
+        message: 'Clave secreta incorrecta.'
       });
     }
 
