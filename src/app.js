@@ -1,7 +1,7 @@
-const express = require('express');
-const helmet = require('helmet'); // Seguridad: Cabeceras HTTP
-const cors = require('cors'); // Para permitir peticiones de tu frontend
-const mainRouter = require('./routes'); // Importa nuestro router principal
+const express = require("express");
+const helmet = require("helmet"); // Seguridad: Cabeceras HTTP
+const cors = require("cors"); // Para permitir peticiones de tu frontend
+const mainRouter = require("./routes"); // Importa nuestro router principal
 
 // Inicialización de la aplicación Express
 const app = express();
@@ -10,28 +10,35 @@ const app = express();
 // El orden importa: van antes de las rutas.
 
 // 1. Seguridad (Helmet)
-app.use(helmet()); 
+app.use(helmet());
 
 // 2. CORS (Acceso)
 // Permite que cualquier dominio acceda (en producción, deberías limitar esto)
-app.use(cors({
-  origin: 'https://apibasedatos.onrender.com', // En producción, reemplaza '*' por tu URL de frontend (ej. 'https://mi-frontend.com')
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-}));
+const allowedOrigins = [
+  "https://apibasedatos.onrender.com",
+  "http://localhost:3001",
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins, // En producción, reemplaza '*' por tu URL de frontend (ej. 'https://mi-frontend.com')
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 // 3. Procesamiento de JSON
 // Esto permite que Express lea los datos JSON que le envías
-app.use(express.json()); 
+app.use(express.json());
 
 // B. Rutas de la API
 // Cualquier ruta que empiece con '/api' será manejada por nuestro router
-app.use('/api', mainRouter);
+app.use("/api", mainRouter);
 
 // C. Manejo de Rutas No Encontradas (404)
 app.use((req, res, next) => {
   res.status(404).json({
-    message: 'Error 404: Ruta no encontrada',
-    path: req.path
+    message: "Error 404: Ruta no encontrada",
+    path: req.path,
   });
 });
 
@@ -40,8 +47,8 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   console.error(err.stack); // Muestra el error en la consola del servidor
   res.status(err.status || 500).json({
-    message: err.message || 'Error interno del servidor',
-    error: process.env.NODE_ENV === 'production' ? {} : err.stack // Ocultamos el stack en producción
+    message: err.message || "Error interno del servidor",
+    error: process.env.NODE_ENV === "production" ? {} : err.stack, // Ocultamos el stack en producción
   });
 });
 

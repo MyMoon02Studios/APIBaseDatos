@@ -6,13 +6,13 @@ const config = require('../config');
 const createPostController = async (req, res, next) => {
   try {
     // 1. Extraer datos de la petición (req.body)
-    const { title, content, key } = req.query;
+    const { title, content, author, key } = req.headers;
 
     // *Validación básica (ESENCIAL en cualquier API)*
     if (!title || !content) {
       // Si faltan datos, enviamos un error 400 (Bad Request)
       return res.status(400).json({ 
-        message: 'Faltan campos. Los campos "title" y "content" son obligatorios.' 
+        message: 'Faltan campos. Los campos "title", "content" y "author" son obligatorios.' 
       });
     }
 
@@ -30,7 +30,7 @@ const createPostController = async (req, res, next) => {
 
     // 2. Llamar a la lógica de negocio (el Service)
     // El controlador NO sabe cómo Supabase guarda esto, solo llama a la función.
-    const newPost = await createPost(title, content);
+    const newPost = await createPost(title, content, author);
 
     // 3. Enviar la respuesta (201 Created)
     return res.status(201).json({
