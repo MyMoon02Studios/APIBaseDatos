@@ -1,5 +1,5 @@
 // Importamos solo las funciones que necesitamos del servicio de Supabase
-const { createPost, getAllPosts } = require('../services/supabase.service');
+const { createPost, getAllPosts } = require('../services/mssql.service.js');
 const config = require('../config');
 
 // Función para manejar la creación de un nuevo post (POST /api/posts)
@@ -35,7 +35,7 @@ const createPostController = async (req, res, next) => {
     // 3. Enviar la respuesta (201 Created)
     return res.status(201).json({
       message: 'Post creado con éxito.',
-      data: newPost,
+      newPost: newPost.data,
     });
 
   } catch (error) {
@@ -48,6 +48,17 @@ const createPostController = async (req, res, next) => {
 // Función para obtener todos los posts (GET /api/posts)
 const getAllPostsController = async (req, res, next) => {
   try {
+    const { key } = req.headers;
+    if (!key) {
+      return res.status(403).json({
+        message: 'La clave secreta es obligatoria.'
+      });
+    }
+    else if (key !== config.postKey) {
+      return res.status(403).json({
+        message: 'Clave secreta incorrecta.'
+      });
+    }
     // 1. Llamar a la lógica de negocio (el Service)
     const posts = await getAllPosts();
 
